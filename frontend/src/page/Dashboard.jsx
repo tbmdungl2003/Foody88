@@ -51,9 +51,15 @@ const Dashboard = () => {
     // Biến này không còn được sử dụng trực tiếp, thay bằng `displayedItems`
     // const foodItems = foodData[location]?.items || [];
 
+    // // Hàm xử lý khi người dùng chọn món ăn từ vòng quay
+    // const handleFoodSelected = (foodName) => {
+    //     setSearchTerm(foodName);
+    // };
+
     return (
         <>
-            {/* <SpinWheel foodItems={foodItems} /> */}
+            {/* <SpinWheel foodItems={displayedItems} onFoodSelected={handleFoodSelected} /> */}
+            
                 <Container 
                     component="main" 
                     maxWidth="lg" 
