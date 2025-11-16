@@ -1,11 +1,13 @@
-import React from 'react';
-import { Box, AppBar, Toolbar, Container, CssBaseline, IconButton, Link, Typography } from '@mui/material';
+import React, { useContext } from 'react';
+import { Box, AppBar, Toolbar, Container, CssBaseline, Link, Typography } from '@mui/material';
 import { AccountCircle as AccountCircleIcon } from '@mui/icons-material';
 import { Link as RouterLink, Outlet, useLocation } from 'react-router-dom'; // Sử dụng Outlet và useLocation
 import Logo from './Logo';
+import { AuthContext } from '../context/AuthContext'; // Import AuthContext
 
 const Layout = () => {
   const location = useLocation(); // Lấy thông tin về đường dẫn hiện tại
+  const { auth } = useContext(AuthContext); // Lấy thông tin xác thực từ context
 
   return (
     <CssBaseline>
@@ -53,9 +55,21 @@ const Layout = () => {
                 <Link component={RouterLink} to="/contact" color="inherit" underline="none" sx={{ fontWeight: location.pathname === '/contact' ? 'bold' : 'normal' }}>連絡</Link>
               </Box>
             </Box>
-            <IconButton color="inherit" component={RouterLink} to="/profile">
-              <AccountCircleIcon sx={{ fontSize: 30 }} />
-            </IconButton>
+            <Box
+              component={RouterLink}
+              to="/profile"
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1,
+                textDecoration: 'none',
+                color: 'inherit',
+                '&:hover': { color: 'primary.main' }
+              }}
+            >
+              {auth.user && <Typography variant="body1" sx={{ fontWeight: 'bold' }}>{auth.user.username}</Typography>}
+              <AccountCircleIcon sx={{ fontSize: 32 }} />
+            </Box>
           </Toolbar>
         </AppBar>
 
