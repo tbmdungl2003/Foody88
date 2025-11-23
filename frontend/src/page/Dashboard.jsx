@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Container, Grid, Card,  CardContent, Link, CircularProgress, Alert } from '@mui/material';
-import { 
-    Image as ImageIcon,
-    Comment as CommentIcon 
-} from '@mui/icons-material';
+import { Box, Typography, Container, Grid, Card,  CardContent, Link, CircularProgress, Alert, Avatar } from '@mui/material';
+import { Image as ImageIcon } from '@mui/icons-material';
 import { Link as RouterLink } from 'react-router-dom';
 import { getFoods } from '../api/api'; // Import hàm gọi API
 import SearchComponent from '../components/SearchComponent'; 
@@ -158,11 +155,12 @@ const Dashboard = () => {
                                         {/* Liên kết đến trang bình luận */}
                                         {item.comments && item.comments.length > 0 ? (
                                             <Link component={RouterLink} to={`/comments/${item._id}`} sx={{ textDecoration: 'none' }}>
-                                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 0.5 }}>
-                                                <CommentIcon sx={{ color: 'text.secondary', fontSize: '1.1rem' }} />
-                                                <Typography variant="body2" color="text.primary">
-                                                    Có <strong>{item.comments.length}</strong> bình luận
-                                                </Typography>
+                                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mt: 0.5 }}>
+                                                    {/* Hiển thị avatar của người bình luận đầu tiên */}
+                                                    <Avatar src={item.comments[0].avatar} sx={{ width: 28, height: 28 }} />
+                                                    <Typography variant="body2" color="text.primary">
+                                                        <strong>{item.comments[0].user}</strong> và {item.comments.length - 1} người khác đã bình luận
+                                                    </Typography>
                                                 </Box>
                                             </Link>
                                         ) : (

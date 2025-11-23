@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Box, AppBar, Toolbar, Container, CssBaseline, Link, Typography, IconButton, Menu, MenuItem, Button, Divider } from '@mui/material';
+import { Box, AppBar, Toolbar, Container, CssBaseline, Link, Typography, IconButton, Menu, MenuItem, Button, Divider, Avatar } from '@mui/material';
 import { AccountCircle as AccountCircleIcon } from '@mui/icons-material';
 import { Link as RouterLink, Outlet, useLocation } from 'react-router-dom'; // Sử dụng Outlet và useLocation
 import Logo from './Logo';
@@ -83,8 +83,20 @@ const Layout = () => {
                   onClick={handleMenu}
                   color="inherit"
                 >
-                  <AccountCircleIcon sx={{ fontSize: 32 }} />
-                  {auth.user && <Typography variant="body1" sx={{ ml: 1, fontWeight: 'bold' }}>{auth.user.username}</Typography>}
+                  {auth.user?.avatar ? (
+                      // Nếu có avatar, hiển thị ảnh
+                      <Avatar 
+                          src={`http://localhost:5000${auth.user.avatar}`} 
+                          alt={auth.user.username}
+                          sx={{ width: 32, height: 32 }} 
+                      />
+                  ) : (
+                      // Nếu không, hiển thị chữ cái đầu
+                      <AccountCircleIcon sx={{ fontSize: 32 }} />
+                  )}
+                  {auth.user && <Typography variant="body1" sx={{ ml: 1, fontWeight: 'bold', display: { xs: 'none', sm: 'block' } }}>
+                    {auth.user.username}
+                  </Typography>}
                 </IconButton>
                 <Menu
                   id="menu-appbar"

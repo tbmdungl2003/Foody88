@@ -2,17 +2,20 @@ const FOOD_DATA_BY_LOCATION = require('../data/foodData.js'); // Đường dẫn
 
 const getFoods = async (req, res) => {
     try {
-        // Tạo bản sao để không thay đổi dữ liệu gốc
-        const dataCopy = JSON.parse(JSON.stringify(FOOD_DATA_BY_LOCATION));
-
-        // "Dịch" từ 'id' sang '_id' để tương thích với frontend
-        for (const locationKey in dataCopy) {
-            dataCopy[locationKey].items = dataCopy[locationKey].items.map(item => {
-                item._id = String(item.id);
-                return item;
-            });
-        }
-        res.json(dataCopy);
+       // Chuyển đổi đối tượng thành mảng các cặp [key, value]
+        const transformedData = Object.fromEntries(
+            Object.entries(FOOD_DATA_BY_LOCATION).map(([locationKey, locationData]) => {
+                // 1. Với mỗi địa điểm, tạo một mảng 'items' mới đã được biến đổi
+                const transformedItems = locationData.items.map(item => ({
+                    ...item, // Giữ lại tất cả các thuộc tính cũ của item
+                    _id: String(item.id) // Thêm thuộc tính _id
+                }));
+                
+                // 2. Trả về một cặp [key, value] mới, với mảng 'items' đã được cập nhật
+                return [locationKey, { ...locationData, items: transformedItems }];
+            })
+        );
+        res.json(transformedData);
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server Error');

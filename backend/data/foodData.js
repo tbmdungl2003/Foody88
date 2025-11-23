@@ -10,8 +10,8 @@ const FOOD_DATA_BY_LOCATION = {
                 address: '49 Bát Đàn, Hoàn Kiếm, Hà Nội',
                 image: 'https://i.ytimg.com/vi/71qA4h-h-aE/maxresdefault.jpg',                
                 comments: [
-                    { id: 1, user: 'Aさん', avatar: 'A', text: 'Nước dùng ở đây thật tuyệt vời, rất đậm đà và thơm mùi xương hầm.', date: '2023-10-26' },
-                    { id: 2, user: 'Bさん', avatar: 'B', text: 'Thịt bò mềm, không bị dai. Sẽ quay lại lần nữa!', date: '2023-10-25' }
+                    { id: 1, user: 'Aさん', avatar: 'https://i.pravatar.cc/150?u=a', text: 'Nước dùng ở đây thật tuyệt vời, rất đậm đà và thơm mùi xương hầm.', date: '2023-10-26' },
+                    { id: 2, user: 'Bさん', avatar: 'https://i.pravatar.cc/150?u=b', text: 'Thịt bò mềm, không bị dai. Sẽ quay lại lần nữa!', date: '2023-10-25' }
                 ]
             },
             {
@@ -22,7 +22,7 @@ const FOOD_DATA_BY_LOCATION = {
                 address: 'Số 1 Hàng Mành, Hoàn Kiếm, Hà Nội',
                 image: 'https://cdn.tgdd.vn/2021/08/CookProduct/1-1200x676-40.jpg',                
                 comments: [
-                    { id: 3, user: 'Cさん', avatar: 'C', text: 'Chả nướng thơm lừng, nước chấm pha vừa miệng. Rất đáng thử.', date: '2023-09-15' }
+                    { id: 3, user: 'Cさん', avatar: 'https://i.pravatar.cc/150?u=c', text: 'Chả nướng thơm lừng, nước chấm pha vừa miệng. Rất đáng thử.', date: '2023-09-15' }
                 ]
             },
             {
@@ -47,7 +47,7 @@ const FOOD_DATA_BY_LOCATION = {
                 address: '1A Hải Phòng, Hải Châu, Đà Nẵng',
                 image: 'https://static.vinwonders.com/production/mi-quang-da-nang-1.jpg',                
                 comments: [
-                    { id: 4, user: 'Dさん', avatar: 'D', text: 'Hương vị đặc trưng không lẫn vào đâu được. Rất ngon!', date: '2023-11-01' }
+                    { id: 4, user: 'Dさん', avatar: 'https://i.pravatar.cc/150?u=d', text: 'Hương vị đặc trưng không lẫn vào đâu được. Rất ngon!', date: '2023-11-01' }
                 ]
             },
             {
@@ -58,7 +58,7 @@ const FOOD_DATA_BY_LOCATION = {
                 address: 'Quán Mậu, 35 Đỗ Thúc Tịnh, Cẩm Lệ, Đà Nẵng',                
                 image: 'https://cdn.tgdd.vn/2021/03/CookRecipe/GalleryStep/thanh-pham-1495.jpg',
                 comments: [
-                    { id: 5, user: 'Eさん', avatar: 'E', text: 'Rau sống tươi, mắm nêm là linh hồn của món này.', date: '2023-10-20' }
+                    { id: 5, user: 'Eさん', avatar: 'https://i.pravatar.cc/150?u=e', text: 'Rau sống tươi, mắm nêm là linh hồn của món này.', date: '2023-10-20' }
                 ]
             }
         ]
@@ -74,7 +74,7 @@ const FOOD_DATA_BY_LOCATION = {
                 address: 'Cơm tấm Ba Ghiền, 84 Đặng Văn Ngữ, Phú Nhuận, TP.HCM',
                 image: 'https://stc.shopiness.vn/deal/2019/10/08/a/8/9/d/1570505962298_540.png',                
                 comments: [
-                    { id: 6, user: 'Fさん', avatar: 'F', text: 'Sườn nướng mềm và thấm vị, một đĩa rất chất lượng.', date: '2023-10-10' }
+                    { id: 6, user: 'Fさん', avatar: 'https://i.pravatar.cc/150?u=f', text: 'Sườn nướng mềm và thấm vị, một đĩa rất chất lượng.', date: '2023-10-10' }
                 ]
             },
             {
