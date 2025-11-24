@@ -1,16 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const authMiddleware = require('../middleware/auth.js');
-const { getCommentsForFood, addComment } = require('../controllers/commentController');
+const auth = require('../middleware/auth');
+const { getCommentsByFoodId, addComment } = require('../controllers/commentController');
 
 // @route   GET api/comments/:foodId
-// @desc    Lấy tất cả bình luận cho một món ăn
+// @desc    Lấy tất cả bình luận của một món ăn
 // @access  Public
-router.get('/:foodId', getCommentsForFood);
+router.get('/:foodId', getCommentsByFoodId);
 
 // @route   POST api/comments/:foodId
-// @desc    Thêm một bình luận mới cho một món ăn
-// @access  Private (Yêu cầu đăng nhập)
-router.post('/:foodId', authMiddleware, addComment);
+// @desc    Thêm một bình luận mới
+// @access  Private
+router.post('/:foodId', auth, addComment);
 
 module.exports = router;

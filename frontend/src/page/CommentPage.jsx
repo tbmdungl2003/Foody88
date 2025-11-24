@@ -34,7 +34,7 @@ const CommentPage = () => {
     const fetchComments = async () => {
         try {
             setLoading(true);
-            const response = await api.get(`/api/comments/${foodId}`);
+            const response = await api.get(`/comments/${foodId}`);
             setComments(response.data);
         } catch (err) {
             setError('Không thể tải bình luận.');
@@ -52,7 +52,7 @@ const CommentPage = () => {
         if (!newComment.trim()) return;
 
         try {
-            const response = await api.post(`/api/comments/${foodId}`, { text: newComment });
+            const response = await api.post(`/comments/${foodId}`, { text: newComment });
             // Thêm bình luận mới vào đầu danh sách để hiển thị ngay lập tức
             setComments(prevComments => [response.data, ...prevComments]);
             setNewComment(''); // Xóa nội dung trong ô nhập

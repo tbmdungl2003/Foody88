@@ -9,7 +9,7 @@ import {
     Divider,
     Paper
 } from '@mui/material';
-const CommentSection = ({ comments = [] }) => { // Nhận 'comments' từ props
+const CommentSection = ({ comments = [] }) => { 
     if (comments.length === 0) {
         return (
             <Typography color="text.secondary" sx={{ mt: 2, fontStyle: 'italic' }}>
