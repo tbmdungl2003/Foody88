@@ -11,7 +11,7 @@ export const loginAction = ({ email, password }) => {
 
 export const register = ({ email, password, username }) => {
   const URL = "/auth/register";
-  const data = {
+  const data = {  
     email,
     password,
     username,
@@ -23,7 +23,10 @@ export const getFoods = () => {
   const URL = "/foods";
   return axios.get(URL);
 };
-
+export const getStore = () => {
+  const URL = "/store";
+  return axios.get(URL);
+}
 export const updateUserProfile = (formDataObject) => {
   const URL = "/auth/profile";
   // Chuyển đổi object thành FormData để có thể gửi file

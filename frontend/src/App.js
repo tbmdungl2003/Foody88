@@ -11,7 +11,7 @@ import Layout from './components/Layout';
 import MapComponent from './page/Map';
 import Profile from './page/Profile'; 
 import FoodDetails from './page/FoodDetails';import CommentPage from './page/CommentPage'; // 1. Import lại trang bình luận
-
+import StorePage from './page/StorePage.jsx';
 function App() {
   return (
     <AuthWrapper>
@@ -23,6 +23,7 @@ function App() {
           <Route element={<PublicRoute />}>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/restaurent" element={<StorePage/>}/>
           </Route>
           {/* Các route chỉ người đã đăng nhập mới vào được */}
           <Route element={<ProtectedRoute />}>
@@ -32,6 +33,7 @@ function App() {
               <Route path="/profile" element={<Profile />} />
               <Route path="/comments/:id" element={<CommentPage />} /> 
               <Route path="/details/:id" element={<FoodDetails />} /> 
+              
             </Route>
           </Route>
         </Routes>
