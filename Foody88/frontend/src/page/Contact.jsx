@@ -79,7 +79,7 @@ const Contact = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (validate()) {
-            setStatusMessage('メッセージを送信いただきありがとうございます！Foody88は24時間以内に返信いたします。');
+            setStatusMessage('メッセージを送信いただきありがとうございます!Foody88は24時間以内に返信いたします。');
             e.target.reset();
             setTimeout(() => setStatusMessage(''), 5000);
         }

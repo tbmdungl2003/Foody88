@@ -13,7 +13,7 @@ const CommentSection = ({ comments = [] }) => {
     if (comments.length === 0) {
         return (
             <Typography color="text.secondary" sx={{ mt: 2, fontStyle: 'italic' }}>
-                この料理にはまだコメントがありません。(Chưa có bình luận nào cho món ăn này.)
+                この料理にはまだコメントがありません。
             </Typography>
         );
     }
@@ -21,7 +21,7 @@ const CommentSection = ({ comments = [] }) => {
     return (
         <Paper elevation={2} sx={{ mt: 4, p: 3 }}>
             <Typography variant="h6" gutterBottom>
-                コメント (Bình luận của khách hàng)
+                コメント
             </Typography>
             <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
                 {comments.map((comment, index) => (
@@ -36,7 +36,7 @@ const CommentSection = ({ comments = [] }) => {
                                         {comment.user}
                                     </Typography>
                                 }
-                                secondary={`${comment.text} — ${new Date(comment.date).toLocaleDateString('vi-VN')}`}
+                                secondary={`${comment.text} — ${new Date(comment.date).toLocaleDateString('ja-JP')}`}
                             />
                         </ListItem>
                         {index < comments.length - 1 && <Divider variant="inset" component="li" />}

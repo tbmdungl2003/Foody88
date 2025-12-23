@@ -33,7 +33,7 @@ const userIcon = new L.Icon({
 });
 
 const DEFAULT_CENTER = { lat: 21.028511, lng: 105.804817 };
-const CONTAINER_STYLE = { height: '600px', width: '100%' };
+const CONTAINER_STYLE = { height: '750px', width: '100%' };
 
 // Component điều khiển map
 const MapController = ({ center }) => {
@@ -63,13 +63,11 @@ const MapComponent = () => {
 
             let locationPromise;
 
-            // Ưu tiên vị trí từ URL
             if (latFromQuery && lngFromQuery) {
                 const targetPosition = { lat: Number(latFromQuery), lng: Number(lngFromQuery) };
                 setPosition(targetPosition);
-                locationPromise = Promise.resolve(targetPosition); // Tạo một promise đã hoàn thành
+                locationPromise = Promise.resolve(targetPosition); 
             } else {
-                // Nếu không có, lấy vị trí người dùng
                 locationPromise = new Promise((resolve, reject) => {
                     if (!navigator.geolocation) {
                         reject(new Error('このブラウザはジオロケーションをサポートしていません'));
@@ -82,7 +80,6 @@ const MapComponent = () => {
                 });
             }
 
-            // Chạy song song API và Geolocation
             const results = await Promise.allSettled([
                 getStores(),
                 locationPromise
@@ -90,13 +87,10 @@ const MapComponent = () => {
 
             const [storesResult, locationResult] = results;
 
-            // Xử lý dữ liệu Stores
             if (storesResult.status === 'fulfilled') {
                 try {
                     const response = storesResult.value;
                     let rawList = [];
-
-                    // Tự động phát hiện cấu trúc dữ liệu
                     if (response.data && Array.isArray(response.data)) {
                         rawList = response.data;
                     } else if (Array.isArray(response)) {
@@ -105,7 +99,6 @@ const MapComponent = () => {
                         rawList = Object.values(response.data).flatMap(city => city.items || []);
                     }
 
-                    // Map dữ liệu và ép kiểu số an toàn
                     const processedStores = rawList.map(store => ({
                         ...store,
                         lat: Number(store.lat || store.latitude || store.Latitude), 
@@ -117,13 +110,10 @@ const MapComponent = () => {
                     console.error("Lỗi xử lý dữ liệu store:", err);
                 }
             }
-
-            // Xử lý vị trí người dùng
             if (locationResult.status === 'fulfilled') {
-                // Chỉ cập nhật nếu không có vị trí từ URL
                 if (!latFromQuery) setPosition(locationResult.value);
             } else {
-                if (!latFromQuery) setError('位置情報の取得に失敗しました (Lỗi lấy vị trí).');
+                if (!latFromQuery) setError('位置情報の取得に失敗しました .');
             }
 
             setLoading(false);

@@ -3,7 +3,6 @@ const connectDB = require('./config/db');
 const path = require('path'); // Thêm module 'path'
 const cors = require('cors');
 require('dotenv').config(); // Đảm bảo dòng này ở trên cùng
-const seedAdmin = require('./seeder');
 
 const app = express();
 
@@ -20,5 +19,5 @@ const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, async () => {
     console.log(`Server started on port ${PORT}`);
-    await seedAdmin();
+
 });

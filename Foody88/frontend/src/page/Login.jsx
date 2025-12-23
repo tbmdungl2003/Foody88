@@ -8,12 +8,12 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { loginAction } from "../api/api";
-import api from "../api/axios"; // Import axios instance để gọi API /auth
+import api from "../api/axios"; 
 import { AuthContext } from "../context/AuthContext";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { setAuth } = useContext(AuthContext); // Lấy hàm setAuth từ Context
+  const { setAuth } = useContext(AuthContext); 
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -35,9 +35,7 @@ const Login = () => {
         token: token,
         user: user,
       });
-
-      console.log("Role nhận được:", user.role); // Kiểm tra xem có phải là 'admin' không
-      // Kiểm tra role để điều hướng
+      
       if (user.role === 'admin' || user.role === 'Admin') {
         navigate("/admin/dashboard");
       } else {

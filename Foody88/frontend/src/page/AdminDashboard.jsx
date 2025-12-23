@@ -15,7 +15,6 @@ const AdminDashboard = () => {
     useEffect(() => {
         if (auth.user) {
             if (auth.user.role !== 'admin' && auth.user.role !== 'Admin') {
-                console.warn("User is not admin, redirecting...");
                 navigate('/');
             }
         }

@@ -1,24 +1,7 @@
 import React, { useContext, useState, useRef, useEffect } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { updateUserProfile } from '../api/api'; 
-import {
-    Box,
-    Container,
-    Typography,
-    Card,
-    CardContent,
-    Avatar,
-    Grid,
-    Divider,
-    Button,
-    TextField,
-    CircularProgress,
-    Alert, 
-    FormControl,
-    InputLabel,
-    Select,
-    MenuItem,
-} from '@mui/material';
+import { Box, Container, Typography, Card, CardContent, Avatar, Grid, Divider, Button, TextField, CircularProgress, Alert, FormControl, InputLabel, Select, MenuItem, } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -134,17 +117,19 @@ const Profile = () => {
 
     if (!auth.isAuthenticated || !auth.user) {
         return (
-            <Container sx={{ py: 4 }}>
-                <Typography variant="h5" align="center">
-                    ユーザー情報が見つかりません。ログインしてください。
-                    (Không tìm thấy thông tin người dùng. Vui lòng đăng nhập.)
-                </Typography>
-            </Container>
+            <Box sx={{ backgroundColor: '#f8eecbff', minHeight: '100vh', py: 4 }}>
+                <Container>
+                    <Typography variant="h5" align="center">
+                        ユーザー情報が見つかりません。ログインしてください。
+                    </Typography>
+                </Container>
+            </Box>
         );
     }
 
     return (
-        <Container component="main" maxWidth="md" sx={{ mt: 2, mb: 4 }}>
+        <Box sx={{ backgroundColor: '#f8eecbff', minHeight: '100vh', py: 4 }}>
+            <Container component="main" maxWidth="md">
             <Typography variant="h5" component="h2" sx={{ mb: 2, fontWeight: 'bold' }}>
                 プロファイル (Profile)
             </Typography>
@@ -177,7 +162,7 @@ const Profile = () => {
                                 disabled={!isEditing}
                                 onClick={() => fileInputRef.current.click()}
                             >
-                                写真を変更 (Đổi ảnh)
+                                写真を変更 
                             </Button>
                         </Grid>
                         
@@ -237,7 +222,7 @@ const Profile = () => {
             {/* 5. Khu vực mua hàng (Mua sắm) */}
             <Card sx={{ boxShadow: 3, borderRadius: 2, mt: 3, p: 4 }}>
                 <Typography variant="h6" gutterBottom>
-                    購入履歴 (Lịch sử mua hàng)
+                    購入履歴 
                 </Typography>
                 <Box sx={{ height: 150, border: '1px dashed #ccc', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <Typography color="text.secondary">購入した商品リストはここに表示されます。</Typography>
@@ -304,7 +289,8 @@ const Profile = () => {
                     </>
                 )}
             </Box>
-        </Container>
+            </Container>
+        </Box>
     );
 };
 

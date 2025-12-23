@@ -38,6 +38,7 @@ const FoodManager = () => {
                     (cityData.items || []).map(item => ({ ...item, city: cityKey }))
                 );
             }
+
             setFoods(allFoods);
         } catch (err) {
             console.error("Lỗi tải dữ liệu:", err);

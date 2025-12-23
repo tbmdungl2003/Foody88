@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useMemo, useContext } from 'react';
 import { 
   Box, Typography, Container, Grid, Card, CardMedia, CardContent, 
-  Link, CircularProgress, Alert, Avatar, Button
+  Link, CircularProgress, Alert, Avatar, Button, IconButton
 } from '@mui/material';
+import StarIcon from '@mui/icons-material/Star';
+import StarBorderIcon from '@mui/icons-material/StarBorder';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { getFoods, getStores } from '../api/api'; 
 import SearchComponent from '../components/SearchComponent'; 
@@ -21,8 +23,9 @@ const Dashboard = () => {
     const [stores, setStores] = useState([]); 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
-    // Nếu là admin mà lỡ lạc vào đây, chuyển hướng sang Admin Dashboard ngay
+    const [favorites, setFavorites] = useState([]);
+    const [initialFavorites, setInitialFavorites] = useState([]); 
+    
     useEffect(() => {
         if (auth.user && (auth.user.role === 'admin' || auth.user.role === 'Admin')) {
             navigate('/admin/dashboard');
@@ -34,17 +37,57 @@ const Dashboard = () => {
             try {
                 setLoading(true);
                 const [foodsRes, storesRes] = await Promise.all([getFoods(), getStores()]);
-                setFoodData(foodsRes.data);
+                const rawData = foodsRes.data;
+                const processedData = {};
+
+                if (rawData && typeof rawData === 'object') {
+                    Object.keys(rawData).forEach(key => {
+                        const group = rawData[key];
+                        if (group && Array.isArray(group.items)) {
+                            const itemsWithLocalComments = group.items.map(item => {
+                                const localComments = JSON.parse(localStorage.getItem(`comments_${item._id}`) || '[]');
+                                const apiComments = item.comments || [];
+                                return { ...item, comments: [...localComments, ...apiComments] };
+                            });
+                            processedData[key] = { ...group, items: itemsWithLocalComments };
+                        } else {
+                            processedData[key] = group;
+                        }
+                    });
+                    setFoodData(processedData);
+                } else {
+                    setFoodData(rawData);
+                }
+
                 setStores(storesRes.data);
                 setError(null);
+
+                const storedFavs = JSON.parse(localStorage.getItem('favoriteFoods') || '[]');
+                setFavorites(storedFavs);
+                setInitialFavorites(storedFavs); // Lưu trạng thái ban đầu để sort
             } catch (err) {
-                setError("Không thể tải dữ liệu.");
+                setError("データを読み込めませんでした。");
             } finally {
                 setLoading(false);
             }
         };
         fetchData();
     }, []); 
+
+    const handleToggleFavorite = (e, id) => {
+        e.preventDefault(); // Ngăn chặn chuyển trang khi click vào tim
+        e.stopPropagation();
+        
+        const currentFavs = JSON.parse(localStorage.getItem('favoriteFoods') || '[]');
+        let newFavs;
+        if (currentFavs.includes(id)) {
+            newFavs = currentFavs.filter(favId => favId !== id);
+        } else {
+            newFavs = [...currentFavs, id];
+        }
+        localStorage.setItem('favoriteFoods', JSON.stringify(newFavs));
+        setFavorites(newFavs);
+    };
 
     const displayedStores = useMemo(() => {
         if (!stores || stores.length === 0) {
@@ -66,10 +109,17 @@ const Dashboard = () => {
             itemsToDisplay = foodData[location]?.items || [];
         }
         if (searchTerm.trim() !== '') {
-            return itemsToDisplay.filter(item => item.name.toLowerCase().includes(searchTerm.toLowerCase()));
+            itemsToDisplay = itemsToDisplay.filter(item => item.name.toLowerCase().includes(searchTerm.toLowerCase()));
         }
-        return itemsToDisplay;
-    }, [searchTerm, location, foodData]);
+
+        return [...itemsToDisplay].sort((a, b) => {
+            const isFavA = initialFavorites.includes(a._id);
+            const isFavB = initialFavorites.includes(b._id);
+            if (isFavA && !isFavB) return -1;
+            if (!isFavA && isFavB) return 1;
+            return 0;
+        });
+    }, [searchTerm, location, foodData, initialFavorites]);
 
     const handleLocationChange = (newLocation) => {
         setLocation(newLocation);
@@ -78,7 +128,7 @@ const Dashboard = () => {
 
     return (
         <Container component="main" maxWidth="xl" sx={{ py: 4, flexGrow: 1, backgroundColor: '#f8eecbff' }}>
-            {loading && <Box sx={{ display: 'flex', justifyContent: 'center', my: 4 }}><CircularProgress /><Typography sx={{ ml: 2 }}>Đang tải...</Typography></Box>}
+            {loading && <Box sx={{ display: 'flex', justifyContent: 'center', my: 4 }}><CircularProgress /><Typography sx={{ ml: 2 }}>読み込み中...</Typography></Box>}
             {error && <Alert severity="error" sx={{ mb: 4 }}>{error}</Alert>}
 
             <SearchComponent 
@@ -196,9 +246,25 @@ const Dashboard = () => {
                                 border: '1px solid #e0e0e0',
                                 borderRadius: 3,
                                 overflow: 'hidden', 
+                                position: 'relative', // Để định vị nút tim
                                 transition: '0.3s',
                                 '&:hover': { boxShadow: 6, transform: 'translateY(-2px)' }
                             }}>
+                                {/* Nút Yêu thích */}
+                                <IconButton 
+                                    onClick={(e) => handleToggleFavorite(e, item._id)}
+                                    sx={{ 
+                                        position: 'absolute', 
+                                        top: 8, 
+                                        right: 8, 
+                                        zIndex: 10, 
+                                        bgcolor: 'rgba(255,255,255,0.8)',
+                                        '&:hover': { bgcolor: 'rgba(255,255,255,1)' }
+                                    }}
+                                >
+                                    {favorites.includes(item._id) ? <StarIcon color="warning" /> : <StarBorderIcon />}
+                                </IconButton>
+
                                 {/* Liên kết cho hình ảnh và thông tin chính */}
                                 <Box component={RouterLink} to={`/details/${item._id}`} sx={{ textDecoration: 'none', color: 'inherit' }}>
                                     <CardMedia
@@ -248,11 +314,16 @@ const Dashboard = () => {
                                     }}
                                 >
                                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                        <Avatar src={item.comments?.[0]?.avatar} sx={{ width: 24, height: 24, mr: 1 }} />
+                                        <Avatar 
+                                            src={item.comments?.[0]?.user?.avatar ? `http://localhost:5000${item.comments[0].user.avatar}` : ''} 
+                                            sx={{ width: 24, height: 24, mr: 1 }} 
+                                        >
+                                            {item.comments?.[0]?.user?.username?.charAt(0).toUpperCase()}
+                                        </Avatar>
                                         <Typography variant="caption" color="text.secondary" noWrap>
                                             {item.comments && item.comments.length > 0 
-                                                ? `${item.comments.length} bình luận` 
-                                                : 'Chưa có bình luận'}
+                                                ? `${item.comments.length} コメント` 
+                                                : 'コメントなし'}
                                         </Typography>
                                     </Box>
                                 </Box>

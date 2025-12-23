@@ -14,7 +14,6 @@ const HomePage = () => {
           backgroundColor: '#f5f5f5',
         }}
       >
-        {/* === Header === */}
         <AppBar
           position="static"
           color="default"
@@ -22,8 +21,6 @@ const HomePage = () => {
           sx={{ borderBottom: (t) => `1px solid ${t.palette.divider}` }}
         >
           <Toolbar sx={{ justifyContent: 'space-between' }}>
-
-            {/* 1. Logo (Trái) */}
             <Box
               component={RouterLink}
               to="/"
@@ -35,11 +32,7 @@ const HomePage = () => {
             >
               <Logo size={80} />
             </Box>
-
-            {/* Các nút hành động (2 & 3) (Phải) */}
             <Box sx={{ display: 'flex', gap: 1 }}>
-
-              {/* 2. ログイン (Đăng nhập) */}
               <Button
                 component={RouterLink}
                 to="/login"
@@ -48,8 +41,6 @@ const HomePage = () => {
               >
                 ログイン
               </Button>
-
-              {/* 3. レジスター (Đăng ký) */}
               <Button
                 component={RouterLink}
                 to="/register"
@@ -62,11 +53,7 @@ const HomePage = () => {
             </Box>
           </Toolbar>
         </AppBar>
-
-        {/* === Main Content (Vị trí 4) === */}
         <Container component="main" sx={{ flexGrow: 1, py: 8, textAlign: 'center' }}>
-
-          {/* 4. プログラム名 (Tên chương trình) */}
           <Typography
             variant="h2"
             component="h1"
@@ -75,28 +62,23 @@ const HomePage = () => {
           >
             Foody88
           </Typography>
-
-          {/* Giới thiệu chương trình */}
           <Typography variant="h6" color="text.secondary" paragraph sx={{ mt: 2 }}>
-            Foody88へようこそ！あなたの食の冒険を始めましょう。<br />
-            (Chào mừng đến với Foody88! Hãy bắt đầu cuộc phiêu lưu ẩm thực của bạn.)
+            Foody88へようこそ。美味しい料理は、心を満たし、人々をつなぎます。<br />
+            あなたにとっての「至福の一皿」を見つける旅を、ここからスタートしましょう。
           </Typography>
         </Container>
-
-        {/* === Footer (Vị trí 5) === */}
         <Box
           component="footer"
           sx={{
             py: 3,
             px: 2,
-            mt: 'auto', // Đẩy Footer xuống cuối trang
+            mt: 'auto', 
             backgroundColor: (t) =>
               t.palette.mode === 'light' ? t.palette.grey[200] : t.palette.grey[800],
             borderTop: (t) => `1px solid ${t.palette.divider}`,
           }}
         >
           <Container maxWidth="lg" sx={{ textAlign: 'center' }}>
-            {/* 5. フッター (Footer) */}
             <Typography variant="body2" color="text.secondary">
               フッター © {new Date().getFullYear()} Foody88. All rights reserved. | プライバシーポリシー
             </Typography>
