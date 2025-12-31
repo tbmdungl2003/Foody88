@@ -3,7 +3,6 @@ import {
   Box, Typography, Button, Table, TableBody, TableCell,
   TableContainer, TableHead, TableRow, Paper, IconButton, Avatar,
   Dialog, DialogTitle, DialogContent, DialogActions, TextField,
-  FormControl, InputLabel, Select, MenuItem
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -151,21 +150,9 @@ const FoodManager = () => {
             </TableContainer>
 
             <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
-                <DialogTitle>{isEditing ? '料理を編集' : '料理を追加'}</DialogTitle>
+                <DialogTitle>{isEditing ? '料理を編集' : '料理を追加'}</DialogTitle>    
                 <DialogContent>
-                    <FormControl fullWidth margin="dense">
-                        <InputLabel>都市コード</InputLabel>
-                        <Select
-                            name="city"
-                            value={currentFood.city || ''}
-                            label="都市コード"
-                            onChange={handleChange}
-                        >
-                            <MenuItem value="hanoi">Ha Noi</MenuItem>
-                            <MenuItem value="hcm">Ho Chi Minh</MenuItem>
-                            <MenuItem value="danang">Da Nang</MenuItem>
-                        </Select>
-                    </FormControl>
+                    <TextField margin="dense" name="city" label="都市コード (例: hanoi, hcm)" type="text" fullWidth variant="outlined" value={currentFood.city || ''} onChange={handleChange} />
                     <TextField autoFocus margin="dense" name="name" label="料理名" type="text" fullWidth variant="outlined" value={currentFood.name} onChange={handleChange} />
                     <TextField margin="dense" name="price" label="価格 (例: 50.000đ)" type="text" fullWidth variant="outlined" value={currentFood.price} onChange={handleChange} />
                     <TextField margin="dense" name="address" label="住所" type="text" fullWidth variant="outlined" value={currentFood.address} onChange={handleChange} />

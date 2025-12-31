@@ -1,9 +1,10 @@
 import React from 'react';
-import { Box, Typography, Button, AppBar, Toolbar, Container, CssBaseline, } from '@mui/material';
+import { Box, Typography, Button, AppBar, Toolbar, Container, CssBaseline } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import Logo from '../components/Logo';
 
 const HomePage = () => {
+
   return (
     <CssBaseline>
       <Box
@@ -53,7 +54,8 @@ const HomePage = () => {
             </Box>
           </Toolbar>
         </AppBar>
-        <Container component="main" sx={{ flexGrow: 1, py: 8, textAlign: 'center' }}>
+        <Container component="main" sx={{ flexGrow: 1, py: 8 }}>
+          <Box sx={{ textAlign: 'center', mb: 6 }}>
           <Typography
             variant="h2"
             component="h1"
@@ -66,6 +68,7 @@ const HomePage = () => {
             Foody88へようこそ。美味しい料理は、心を満たし、人々をつなぎます。<br />
             あなたにとっての「至福の一皿」を見つける旅を、ここからスタートしましょう。
           </Typography>
+          </Box>
         </Container>
         <Box
           component="footer"

@@ -38,7 +38,6 @@ const Layout = () => {
         <AppBar position="static" color="default" elevation={1}>
           <Toolbar sx={{ justifyContent: 'space-between' }}>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              {/* Bọc Logo trong một Link để có thể nhấn vào */}
               <Box
                 component={RouterLink}
                 to="/"
@@ -130,10 +129,8 @@ const Layout = () => {
             )}
           </Toolbar>
         </AppBar>
-        
-        {/* Thay đổi: Bọc Outlet trong một Box để nó tự co giãn */}
         <Box component="main" sx={{ 
-          flexGrow: 1, // Cho phép Box này chiếm hết không gian còn lại
+          flexGrow: 1,
           display: 'flex',
           flexDirection: 'column'
         }}>

@@ -8,8 +8,12 @@ import {
   FormControlLabel,
   Link,
   Stack,
-  Alert, // Thêm Alert để hiển thị lỗi
+  Alert, 
+  Container,
+  Paper,
+  Avatar,
 } from "@mui/material";
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { Link as RouterLink, useNavigate } from "react-router-dom"; // Thêm useNavigate
 import { register } from "../api/api";
 import api from "../api/axios"; // Import axios instance để gọi API /auth
@@ -71,30 +75,35 @@ const Register = () => {
   return (
     <Box
       sx={{
-        maxWidth: 400,
-        margin: "auto",
-        mt: 10,
-        padding: 3,
-        boxShadow: 3,
-        borderRadius: 2,
-        backgroundColor: "white",
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundImage: 'url(https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
       }}
     >
-      <Box
-        sx={{
-          border: "1px solid #ccc",
-          width: 80,
-          height: 30,
-          margin: "0 auto 30px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <Typography variant="body2">LOGO</Typography>
-      </Box>
+      <Container component="main" maxWidth="xs">
+        <Paper 
+          elevation={6} 
+          sx={{ 
+            p: 4, 
+            display: 'flex', 
+            flexDirection: 'column', 
+            alignItems: 'center',
+            borderRadius: 3,
+            backgroundColor: 'rgba(255, 255, 255, 0.95)'
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5" sx={{ fontWeight: 'bold', mb: 2 }}>
+            アカウント作成 (Đăng ký)
+          </Typography>
 
-      <form onSubmit={handleSubmit}>
+      <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, width: '100%' }}>
         {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
         <TextField
           label="ユーザー名"
@@ -103,6 +112,7 @@ const Register = () => {
           margin="normal"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
+          autoFocus
           required
         />
         <TextField
@@ -168,7 +178,7 @@ const Register = () => {
             variant="contained"
             color="primary"
             disabled={!agreedToTerms}
-            sx={{ flexGrow: 1 }}
+            sx={{ flexGrow: 1, py: 1.5, fontWeight: 'bold' }}
           >
             アカウントを作成する
           </Button>
@@ -178,12 +188,14 @@ const Register = () => {
             to="/login"
             variant="outlined"
             color="secondary"
-            sx={{ minWidth: 100 }}
+            sx={{ minWidth: 100, py: 1.5, fontWeight: 'bold' }}
           >
             ログイン
           </Button>
         </Stack>
-      </form>
+      </Box>
+      </Paper>
+      </Container>
     </Box>
   );
 };

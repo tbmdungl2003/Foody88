@@ -25,7 +25,7 @@ const Dashboard = () => {
     const [error, setError] = useState(null);
     const [favorites, setFavorites] = useState([]);
     const [initialFavorites, setInitialFavorites] = useState([]); 
-    
+
     useEffect(() => {
         if (auth.user && (auth.user.role === 'admin' || auth.user.role === 'Admin')) {
             navigate('/admin/dashboard');
@@ -75,7 +75,7 @@ const Dashboard = () => {
     }, []); 
 
     const handleToggleFavorite = (e, id) => {
-        e.preventDefault(); // Ngăn chặn chuyển trang khi click vào tim
+        e.preventDefault(); 
         e.stopPropagation();
         
         const currentFavs = JSON.parse(localStorage.getItem('favoriteFoods') || '[]');
@@ -153,7 +153,7 @@ const Dashboard = () => {
                             width: '100%',
                             height: { xs: '300px', md: '400px' },
                             objectFit: 'cover',
-                            filter: 'brightness(0.6)', // Làm tối ảnh để nổi bật text
+                            filter: 'brightness(0.6)', 
                         }}
                     />
                     <Box sx={{
@@ -246,11 +246,10 @@ const Dashboard = () => {
                                 border: '1px solid #e0e0e0',
                                 borderRadius: 3,
                                 overflow: 'hidden', 
-                                position: 'relative', // Để định vị nút tim
+                                position: 'relative', 
                                 transition: '0.3s',
                                 '&:hover': { boxShadow: 6, transform: 'translateY(-2px)' }
                             }}>
-                                {/* Nút Yêu thích */}
                                 <IconButton 
                                     onClick={(e) => handleToggleFavorite(e, item._id)}
                                     sx={{ 
@@ -265,7 +264,6 @@ const Dashboard = () => {
                                     {favorites.includes(item._id) ? <StarIcon color="warning" /> : <StarBorderIcon />}
                                 </IconButton>
 
-                                {/* Liên kết cho hình ảnh và thông tin chính */}
                                 <Box component={RouterLink} to={`/details/${item._id}`} sx={{ textDecoration: 'none', color: 'inherit' }}>
                                     <CardMedia
                                         component="img"

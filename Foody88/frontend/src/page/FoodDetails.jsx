@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, Link as RouterLink } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from 'react';
+import { useParams, Link as RouterLink, Navigate } from 'react-router-dom';
 import { 
     Container, 
     Typography, 
@@ -16,18 +16,17 @@ import {
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import { getFoodById, getStores } from '../api/api';
+import { AuthContext } from '../context/AuthContext';
 
 const FoodDetails = () => {
     const { id } = useParams(); 
+    const { auth } = useContext(AuthContext);
     const [food, setFood] = useState(null);
     const [store, setStore] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
     useEffect(() => {
-        // Cuộn lên đầu trang khi component được tải
         window.scrollTo(0, 0);
-
         const fetchFoodDetails = async () => {
             try {
                 setLoading(true);
@@ -45,9 +44,7 @@ const FoodDetails = () => {
                     allStores = Object.values(storesData).flatMap(city => city.items || []);
                 }
                 const foundStore = allStores.find(s => s.address.trim() === currentFood.address.trim());
-
                 setStore(foundStore);
-
                 setError(null);
             } catch (err) {
                 setError('料理の詳細を読み込めませんでした。もう一度お試しください。');
@@ -56,9 +53,12 @@ const FoodDetails = () => {
                 setLoading(false);
             }
         };
-
         fetchFoodDetails();
     }, [id]); 
+
+    if (!auth.isAuthenticated) {
+        return <Navigate to="/login" />;
+    }
 
     if (loading) {
         return (
@@ -89,56 +89,81 @@ const FoodDetails = () => {
     }
 
     return (
-        <Box sx={{ backgroundColor: '#f8eecbff', minHeight: '100vh', py: 4 }}>
+        <Box sx={{ backgroundColor: '#f8eecbff', minHeight: '100vh', py: { xs: 4, md: 7 } }}>
             <Container maxWidth="lg">
-            <Card sx={{ boxShadow: 3 }}>
-                <Grid container>
-                    {/* Cột ảnh */}
-                    <Grid item xs={12} md={6}>
-                        <CardMedia
-                            component="img"
-                            image={food.image || 'https://via.placeholder.com/600x400.png?text=Foody88'} // Ảnh mặc định
-                            alt={food.name}
-                            sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                        />
-                    </Grid>
-                    {/* Cột thông tin */}
-                    <Grid item xs={12} md={6}>
-                        <CardContent sx={{ p: 4 }}>
-                            <Typography variant="h4" component="h1" gutterBottom sx={{ fontWeight: 'bold' }}>
-                                {food.name}
-                            </Typography>
-                            <Typography variant="h6" color="primary.main" gutterBottom>
-                                {food.price || '価格更新中'}
-                            </Typography>
-                            {/* Hiển thị mô tả và địa chỉ trực tiếp */}
-                            <Typography variant="h6" gutterBottom sx={{ mt: 3 }}>説明</Typography>
-                            <Typography paragraph>{food.description || 'この料理の説明はまだありません。'}</Typography>
-                            <Typography variant="h6" gutterBottom sx={{mt: 2}}>住所</Typography>
-                            <Typography paragraph>{food.address || '住所情報はありません。'}</Typography>
+                <Card sx={{ boxShadow: 3, overflow: 'hidden' }}>
+                    <Grid container>
+                        
+                        {/* --- CỘT ẢNH (Bên trái, nhỏ lại) --- */}
+                        {/* xs={4}: Trên mobile chiếm 4/12 cột (khoảng 33%) */}
+                        {/* md={3}: Trên desktop chiếm 3/12 cột (25%) - Gần với tỷ lệ 3 phần bạn muốn */}
+                        <Grid item xs={12} md={3}> 
+                            <CardMedia
+                                component="img"
+                                image={food.image || 'https://via.placeholder.com/600x400.png?text=Foody88'}
+                                alt={food.name}
+                                sx={{ 
+                                    width: '100%', 
+                                    height: '100%', // Kéo dãn chiều cao bằng cột bên phải
+                                    // objectFit: 'cover' QUAN TRỌNG: Cắt ảnh để lấp đầy khung mà không bị méo
+                                    objectFit: 'cover', 
+                                    minHeight: {xs: '250px', md: 'auto'} // Đảm bảo chiều cao tối thiểu trên mobile
+                                }}
+                            />
+                        </Grid>
 
-                            {/* Hiển thị thông tin nhà hàng */}
-                            {store && (
-                                <>
-                                    <Divider sx={{ my: 3 }} />
-                                    <Typography variant="h6" gutterBottom>レストラン</Typography>
-                                    <Typography paragraph>
-                                        <strong>{store.name}</strong>
-                                    </Typography>
-                                    <Button
-                                        component={RouterLink}
-                                        to={`/store/${store.id}`}
-                                        variant="contained"
-                                        startIcon={<StorefrontIcon />}
-                                    >
-                                        レストランのメニューを見る
-                                    </Button>
-                                </>
-                            )}
-                        </CardContent>
+                        {/* --- CỘT THÔNG TIN (Bên phải, rộng ra) --- */}
+                        {/* xs={8}: Phần còn lại trên mobile */}
+                        {/* md={9}: Phần còn lại trên desktop (75%) - Gần với tỷ lệ 7 phần bạn muốn */}
+                        <Grid item xs={12} md={9}>
+                            <CardContent sx={{ 
+                                p: { xs: 2, md: 4 }, 
+                                height: '100%', 
+                                display: 'flex', 
+                                flexDirection: 'column' 
+                            }}>
+                                <Typography variant="h4" component="h1" gutterBottom sx={{ fontWeight: 'bold', fontSize: { xs: '1.25rem', md: '2.125rem' } }}>
+                                    {food.name}
+                                </Typography>
+                                <Typography variant="h6" color="primary.main" gutterBottom sx={{ fontWeight: 'bold', fontSize: { xs: '1rem', md: '1.25rem' } }}>
+                                    {food.price || '価格更新中'}
+                                </Typography>
+
+                                <Divider sx={{ my: 2 }} />
+
+                                <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold' }}>説明</Typography>
+                                <Typography variant="body2" paragraph color="text.secondary">
+                                    {food.description || 'この料理の説明はまだありません。'}
+                                </Typography>
+
+                                <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold', mt: 1 }}>住所</Typography>
+                                <Typography variant="body2" paragraph color="text.secondary">
+                                    {food.address || '住所情報はありません。'}
+                                </Typography>
+
+                                {store && (
+                                    <Box sx={{ mt: 'auto', pt: 2 }}>
+                                        <Divider sx={{ mb: 2 }} />
+                                        <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold' }}>レストラン</Typography>
+                                        <Typography variant="body1" sx={{ mb: 1 }}>
+                                            {store.name}
+                                        </Typography>
+                                        <Button
+                                            component={RouterLink}
+                                            to={`/store/${store.id}`}
+                                            variant="contained"
+                                            startIcon={<StorefrontIcon />}
+                                            size="small"
+                                            sx={{ textTransform: 'none', width: 'fit-content' }}
+                                        >
+                                            メニューを見る
+                                        </Button>
+                                    </Box>
+                                )}
+                            </CardContent>
+                        </Grid>
                     </Grid>
-                </Grid>
-            </Card>
+                </Card>
             </Container>
         </Box>
     );

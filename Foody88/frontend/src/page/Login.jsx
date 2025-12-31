@@ -5,8 +5,13 @@ import {
   Box,
   Typography,
   Alert,
+  Container,
+  Paper,
+  Avatar,
+  Link,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { useNavigate, Link as RouterLink } from "react-router-dom";
 import { loginAction } from "../api/api";
 import api from "../api/axios"; 
 import { AuthContext } from "../context/AuthContext";
@@ -51,51 +56,76 @@ const Login = () => {
   return (
     <Box
       sx={{
-        maxWidth: 400,
-        margin: "auto",
-        mt: 10,
-        padding: 3,
-        boxShadow: 3,
-        borderRadius: 2,
-        backgroundColor: "white",
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundImage: 'url(https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
       }}
     >
-      <Typography variant="h4" align="center" gutterBottom>
-        ログイン
-      </Typography>
-
-      <form onSubmit={handleSubmit}>
-        {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
-        <TextField
-          label="メール"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <TextField
-          label="パスワード"
-          type="password"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          fullWidth
-          sx={{ mt: 2, mb: 2 }}
+      <Container component="main" maxWidth="xs">
+        <Paper 
+          elevation={6} 
+          sx={{ 
+            p: 4, 
+            display: 'flex', 
+            flexDirection: 'column', 
+            alignItems: 'center',
+            borderRadius: 3,
+            backgroundColor: 'rgba(255, 255, 255, 0.95)'
+          }}
         >
-          ログイン
-        </Button>
-      </form>
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5" sx={{ fontWeight: 'bold', mb: 2 }}>
+            ログイン (Đăng nhập)
+          </Typography>
+
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, width: '100%' }}>
+            {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="メール "
+              name="email"
+              autoComplete="email"
+              autoFocus
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="パスワード "
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2, py: 1.5, fontWeight: 'bold', fontSize: '1rem' }}
+            >
+              ログイン
+            </Button>
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
+              <Link component={RouterLink} to="/register" variant="body2">
+                {"アカウントをお持ちでないですか？登録"}
+              </Link>
+            </Box>
+          </Box>
+        </Paper>
+      </Container>
     </Box>
   );
 };
