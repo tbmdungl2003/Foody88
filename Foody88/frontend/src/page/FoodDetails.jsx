@@ -5,7 +5,6 @@ import {
     Typography, 
     CircularProgress, 
     Alert, 
-    Grid, 
     Card, 
     CardMedia, 
     CardContent,
@@ -25,6 +24,7 @@ const FoodDetails = () => {
     const [store, setStore] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    
     useEffect(() => {
         window.scrollTo(0, 0);
         const fetchFoodDetails = async () => {
@@ -92,40 +92,42 @@ const FoodDetails = () => {
         <Box sx={{ backgroundColor: '#f8eecbff', minHeight: '100vh', py: { xs: 4, md: 7 } }}>
             <Container maxWidth="lg">
                 <Card sx={{ boxShadow: 3, overflow: 'hidden' }}>
-                    <Grid container>
+                    <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' } }}>
                         
-                        {/* --- CỘT ẢNH (Bên trái, nhỏ lại) --- */}
-                        {/* xs={4}: Trên mobile chiếm 4/12 cột (khoảng 33%) */}
-                        {/* md={3}: Trên desktop chiếm 3/12 cột (25%) - Gần với tỷ lệ 3 phần bạn muốn */}
-                        <Grid item xs={12} md={3}> 
+                        {/* --- CỘT ẢNH (Bên trái) --- */}
+                        <Box sx={{ 
+                            width: { xs: '100%', sm: '40%', md: '35%' },
+                            flexShrink: 0
+                        }}>
                             <CardMedia
                                 component="img"
                                 image={food.image || 'https://via.placeholder.com/600x400.png?text=Foody88'}
                                 alt={food.name}
                                 sx={{ 
                                     width: '100%', 
-                                    height: '100%', // Kéo dãn chiều cao bằng cột bên phải
-                                    // objectFit: 'cover' QUAN TRỌNG: Cắt ảnh để lấp đầy khung mà không bị méo
+                                    height: '100%',
                                     objectFit: 'cover', 
-                                    minHeight: {xs: '250px', md: 'auto'} // Đảm bảo chiều cao tối thiểu trên mobile
+                                    minHeight: { xs: '250px', sm: '400px' }
                                 }}
                             />
-                        </Grid>
+                        </Box>
 
-                        {/* --- CỘT THÔNG TIN (Bên phải, rộng ra) --- */}
-                        {/* xs={8}: Phần còn lại trên mobile */}
-                        {/* md={9}: Phần còn lại trên desktop (75%) - Gần với tỷ lệ 7 phần bạn muốn */}
-                        <Grid item xs={12} md={9}>
+                        {/* --- CỘT THÔNG TIN (Bên phải) --- */}
+                        <Box sx={{ 
+                            flex: 1,
+                            display: 'flex',
+                            flexDirection: 'column'
+                        }}>
                             <CardContent sx={{ 
                                 p: { xs: 2, md: 4 }, 
                                 height: '100%', 
                                 display: 'flex', 
                                 flexDirection: 'column' 
                             }}>
-                                <Typography variant="h4" component="h1" gutterBottom sx={{ fontWeight: 'bold', fontSize: { xs: '1.25rem', md: '2.125rem' } }}>
+                                <Typography variant="h4" component="h1" gutterBottom sx={{ fontWeight: 'bold', fontSize: { xs: '1.5rem', md: '2.125rem' } }}>
                                     {food.name}
                                 </Typography>
-                                <Typography variant="h6" color="primary.main" gutterBottom sx={{ fontWeight: 'bold', fontSize: { xs: '1rem', md: '1.25rem' } }}>
+                                <Typography variant="h6" color="primary.main" gutterBottom sx={{ fontWeight: 'bold', fontSize: { xs: '1.1rem', md: '1.25rem' } }}>
                                     {food.price || '価格更新中'}
                                 </Typography>
 
@@ -161,8 +163,8 @@ const FoodDetails = () => {
                                     </Box>
                                 )}
                             </CardContent>
-                        </Grid>
-                    </Grid>
+                        </Box>
+                    </Box>
                 </Card>
             </Container>
         </Box>

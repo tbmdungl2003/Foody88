@@ -79,7 +79,7 @@ function StorePage() {
   }
 
   return (
-    <Box sx={{ width: "100%", minHeight: "100vh", background: "#f5f5f5" }}>
+    <Box sx={{ width: "100%", minHeight: "100vh", backgroundColor: "#f8eecbff" }}>
       <Paper 
         elevation={1} 
         sx={{ 
@@ -171,6 +171,7 @@ function StorePage() {
                   height="180" 
                   image={item.image || 'https://via.placeholder.com/260x180'}
                   alt={item.name}
+                  sx={{ objectFit: 'cover' }}
                 />
                 <CardContent>
                   <Typography gutterBottom variant="h6" component="div" sx={{ fontWeight: 'bold' }}>

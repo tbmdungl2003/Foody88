@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useContext } from 'react';
 import { 
-  Box, Typography, Container, Grid, Card, CardMedia, CardContent, 
+  Box, Typography, Container, Card, CardMedia, CardContent, 
   Link, CircularProgress, Alert, Avatar, Button, IconButton
 } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
@@ -64,7 +64,7 @@ const Dashboard = () => {
 
                 const storedFavs = JSON.parse(localStorage.getItem('favoriteFoods') || '[]');
                 setFavorites(storedFavs);
-                setInitialFavorites(storedFavs); // Lưu trạng thái ban đầu để sort
+                setInitialFavorites(storedFavs);
             } catch (err) {
                 setError("データを読み込めませんでした。");
             } finally {
@@ -147,7 +147,7 @@ const Dashboard = () => {
                 }}>
                     <Box
                         component="img"
-                        src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" // Hình ảnh món ăn đẹp
+                        src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
                         alt="Banner ẩm thực Foody88"
                         sx={{
                             width: '100%',
@@ -203,53 +203,93 @@ const Dashboard = () => {
                 <Typography variant="h5" sx={{ mb: 3, fontWeight: 'bold', borderLeft: '5px solid #1976d2', pl: 2 }}>
                     おすすめのレストラン
                 </Typography>
-                <Grid container spacing={3}>
+                <Box sx={{ 
+                    display: 'grid',
+                    gridTemplateColumns: {
+                        xs: 'repeat(1, 1fr)',
+                        sm: 'repeat(2, 1fr)',
+                        md: 'repeat(3, 1fr)',
+                        lg: 'repeat(4, 1fr)'
+                    },
+                    gap: 3
+                }}>
                     {displayedStores.map((store) => ( 
-                        <Grid item key={store.id} xs={12} sm={6} md={3}>
-                            <Link component={RouterLink} to={`/store/${store.id}`} sx={{ textDecoration: 'none' }}>
-                                <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column', boxShadow: 'none', border: '1px solid #e0e0e0', borderRadius: 3, '&:hover': { boxShadow: 6, transform: 'translateY(-2px)' }, transition: '0.3s' }}>
-                                    <CardMedia
-                                        component="img"
-                                        height="160"
-                                        image={store.image || 'https://placehold.co/400x260?text=Store'}
-                                        alt={store.name}
-                                        sx={{ objectFit: 'cover' }}
-                                    />
-                                    <CardContent>
-                                        <Typography gutterBottom variant="h6" component="div" sx={{ fontWeight: 'bold', fontSize: '1.1rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                            {store.name}
-                                        </Typography>
-                                        <Typography variant="body2" color="text.secondary">
-                                            {store.address}
-                                        </Typography>
-                                    </CardContent>
-                                </Card>
-                            </Link>
-                        </Grid>
+                        <Link key={store.id} component={RouterLink} to={`/store/${store.id}`} sx={{ textDecoration: 'none' }}>
+                            <Card sx={{ 
+                                height: '280px',
+                                display: 'flex', 
+                                flexDirection: 'column', 
+                                boxShadow: 'none', 
+                                border: '1px solid #e0e0e0', 
+                                borderRadius: 3, 
+                                '&:hover': { boxShadow: 6, transform: 'translateY(-2px)' }, 
+                                transition: '0.3s' 
+                            }}>
+                                <CardMedia
+                                    component="img"
+                                    height="160"
+                                    image={store.image || 'https://placehold.co/400x260?text=Store'}
+                                    alt={store.name}
+                                    sx={{ objectFit: 'cover', flexShrink: 0 }}
+                                />
+                                <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', p: 2 }}>
+                                    <Typography gutterBottom variant="h6" component="div" sx={{ 
+                                        fontWeight: 'bold', 
+                                        fontSize: '1.1rem', 
+                                        overflow: 'hidden', 
+                                        textOverflow: 'ellipsis',
+                                        display: '-webkit-box',
+                                        WebkitLineClamp: 1,
+                                        WebkitBoxOrient: 'vertical',
+                                        minHeight: '1.65rem',
+                                        mb: 1
+                                    }}>
+                                        {store.name}
+                                    </Typography>
+                                    <Typography variant="body2" color="text.secondary" sx={{
+                                        overflow: 'hidden',
+                                        textOverflow: 'ellipsis',
+                                        display: '-webkit-box',
+                                        WebkitLineClamp: 2,
+                                        WebkitBoxOrient: 'vertical',
+                                        minHeight: '2.5rem'
+                                    }}>
+                                        {store.address}
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Link>
                     ))}
-                </Grid>
+                </Box>
             </Box>
 
             <Box>
                 <Typography variant="h5" sx={{ mb: 3, fontWeight: 'bold', borderLeft: '5px solid #ff0000', pl: 2 }}>
                     本日のおすすめ
                 </Typography>
-                <Grid container spacing={3} sx={{ width: '100%', margin: 0 }}> 
+                <Box sx={{ 
+                    display: 'grid',
+                    gridTemplateColumns: {
+                        xs: 'repeat(1, 1fr)',
+                        sm: 'repeat(2, 1fr)',
+                        md: 'repeat(3, 1fr)',
+                        lg: 'repeat(4, 1fr)'
+                    },
+                    gap: 3
+                }}>
                     {displayedItems.map((item) => (                                
-                        <Grid item key={item._id} xs={12} sm={6} md={4} lg={3} sx={{ display: 'flex' }}>                                              
-                            <Card sx={{ 
-                                width: '100%',       
-                                height: '380px',    
-                                display: 'flex', 
-                                flexDirection: 'column', 
-                                boxShadow: 'none',
-                                border: '1px solid #e0e0e0',
-                                borderRadius: 3,
-                                overflow: 'hidden', 
-                                position: 'relative', 
-                                transition: '0.3s',
-                                '&:hover': { boxShadow: 6, transform: 'translateY(-2px)' }
-                            }}>
+                        <Card key={item._id} sx={{ 
+                            height: '420px',
+                            display: 'flex', 
+                            flexDirection: 'column', 
+                            boxShadow: 'none',
+                            border: '1px solid #e0e0e0',
+                            borderRadius: 3,
+                            overflow: 'hidden', 
+                            position: 'relative', 
+                            transition: '0.3s',
+                            '&:hover': { boxShadow: 6, transform: 'translateY(-2px)' }
+                        }}>
                                 <IconButton 
                                     onClick={(e) => handleToggleFavorite(e, item._id)}
                                     sx={{ 
@@ -264,40 +304,48 @@ const Dashboard = () => {
                                     {favorites.includes(item._id) ? <StarIcon color="warning" /> : <StarBorderIcon />}
                                 </IconButton>
 
-                                <Box component={RouterLink} to={`/details/${item._id}`} sx={{ textDecoration: 'none', color: 'inherit' }}>
+                                <Box component={RouterLink} to={`/details/${item._id}`} sx={{ textDecoration: 'none', color: 'inherit', display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
                                     <CardMedia
                                         component="img"
                                         image={item.image && item.image !== "" ? item.image : 'https://placehold.co/600x400?text=No+Image'} 
                                         alt={item.name}
                                         sx={{
-                                            width: '100%',      
-                                            height: '220px',    
+                                            width: '100%',
+                                            height: '220px',
                                             objectFit: 'cover', 
                                             objectPosition: 'center',
-                                            display: 'block'    
+                                            display: 'block',
+                                            flexShrink: 0
                                         }}
                                         onError={(e) => {
                                             e.target.onerror = null; 
                                             e.target.src = 'https://placehold.co/600x400?text=Error+Image'
                                         }}
                                     />
-                                    <CardContent sx={{ p: 2, pb: 0, bgcolor: '#fff' }}>
+                                    <CardContent sx={{ p: 2, pb: 0, bgcolor: '#fff', flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
                                         <Typography variant="h6" component="div" 
                                             sx={{ 
-                                                fontWeight: 'bold', fontSize: '1rem', lineHeight: 1.4, mb: 1,
-                                                display: '-webkit-box', overflow: 'hidden', WebkitBoxOrient: 'vertical', WebkitLineClamp: 2,
-                                                height: '2.8rem' 
+                                                fontWeight: 'bold', 
+                                                fontSize: '1rem', 
+                                                lineHeight: 1.4, 
+                                                mb: 1,
+                                                display: '-webkit-box', 
+                                                overflow: 'hidden', 
+                                                WebkitBoxOrient: 'vertical', 
+                                                WebkitLineClamp: 2,
+                                                minHeight: '2.8rem',
+                                                maxHeight: '2.8rem'
                                             }}
                                         >
                                             {item.name}
                                         </Typography>
                                         
-                                        <Typography variant="body1" color="error" sx={{ fontWeight: 'bold' }}>
+                                        <Typography variant="body1" color="error" sx={{ fontWeight: 'bold', mt: 'auto' }}>
                                             {(item.price)}
                                         </Typography>
                                     </CardContent>
                                 </Box>
-                                <Box sx={{ flexGrow: 1, bgcolor: '#fff' }} /> 
+                                
                                 <Box 
                                     component={RouterLink} 
                                     to={`/details/${item._id}/comments`} 
@@ -308,7 +356,8 @@ const Dashboard = () => {
                                         pt: 1,
                                         bgcolor: '#fff',
                                         borderTop: '1px solid #f0f0f0',
-                                        '&:hover': { bgcolor: '#fafafa' }
+                                        '&:hover': { bgcolor: '#fafafa' },
+                                        flexShrink: 0
                                     }}
                                 >
                                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -326,9 +375,8 @@ const Dashboard = () => {
                                     </Box>
                                 </Box>
                             </Card>
-                        </Grid>
                     ))}
-                </Grid>
+                </Box>
             </Box>
             <SpinWheel />
         </Container>
