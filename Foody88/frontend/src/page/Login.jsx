@@ -9,12 +9,14 @@ import {
   Paper,
   Avatar,
   Link,
+  Divider,
 } from "@mui/material";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useNavigate, Link as RouterLink } from "react-router-dom";
 import { loginAction } from "../api/api";
 import api from "../api/axios"; 
 import { AuthContext } from "../context/AuthContext";
+import GoogleLoginButton from "../components/GoogleLoginButton";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -118,6 +120,16 @@ const Login = () => {
             >
               ログイン
             </Button>
+
+            {/* Divider */}
+            <Divider sx={{ my: 2 }}>hoặc</Divider>
+
+            {/* Google Login Button */}
+            <GoogleLoginButton 
+              text="Đăng nhập với Google" 
+              variant="contained"
+            />
+
             <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
               <Link component={RouterLink} to="/register" variant="body2">
                 {"アカウントをお持ちでないですか？登録"}

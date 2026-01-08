@@ -12,12 +12,14 @@ import {
   Container,
   Paper,
   Avatar,
+  Divider,
 } from "@mui/material";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { Link as RouterLink, useNavigate } from "react-router-dom"; // Thêm useNavigate
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { register } from "../api/api";
-import api from "../api/axios"; // Import axios instance để gọi API /auth
-import { AuthContext } from "../context/AuthContext"; // Import AuthContext
+import api from "../api/axios";
+import { AuthContext } from "../context/AuthContext";
+import GoogleLoginButton from "../components/GoogleLoginButton";
 
 const Register = () => {
   const { setAuth } = useContext(AuthContext); // Lấy hàm setAuth từ Context
@@ -193,6 +195,15 @@ const Register = () => {
             ログイン
           </Button>
         </Stack>
+
+        {/* Divider */}
+        <Divider sx={{ my: 3 }}>hoặc</Divider>
+
+        {/* Google Login Button */}
+        <GoogleLoginButton 
+          text="Đăng ký với Google" 
+          variant="contained"
+        />
       </Box>
       </Paper>
       </Container>
