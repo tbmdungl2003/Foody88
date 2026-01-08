@@ -12,7 +12,18 @@ const UserSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: true,
+    default: null, // Có thể null nếu đăng nhập bằng Firebase/OAuth
+  },
+  firebaseUid: {
+    type: String,
+    unique: true,
+    sparse: true, // Cho phép multiple null values
+    default: null,
+  },
+  authProvider: {
+    type: String,
+    enum: ['local', 'google', 'firebase'],
+    default: 'local',
   },
   dob: {
     type: Date,

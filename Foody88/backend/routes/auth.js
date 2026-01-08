@@ -3,6 +3,7 @@ const router = express.Router();
 const path = require('path');
 const multer = require('multer');
 const { register, login, getLoggedInUser, updateUserProfile, getAllUsers, deleteUser } = require('../controllers/authController.js');
+const { verifyFirebaseToken, googleLogin, firebaseLogout, getCurrentUser, linkFirebaseAccount } = require('../controllers/firebaseController.js');
 const authMiddleware = require('../middleware/auth.js');
 const { check } = require('express-validator');
 const storage = multer.diskStorage({
@@ -48,6 +49,13 @@ router.post(
 );
 
 router.put('/profile', authMiddleware, upload, updateUserProfile);
+
+// Firebase & Google OAuth Routes
+router.post('/firebase/verify', verifyFirebaseToken);
+router.post('/google/login', googleLogin);
+router.post('/firebase/logout', firebaseLogout);
+router.get('/firebase/current-user', authMiddleware, getCurrentUser);
+router.post('/firebase/link-account', authMiddleware, linkFirebaseAccount);
 
 // Routes dành cho Admin quản lý User
 router.get('/users', authMiddleware, getAllUsers);
